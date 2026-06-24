@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { PLAN_DISPLAY } from "@/lib/plans";
 import Link from "next/link";
+import { HiUsers, HiCurrencyDollar, HiBolt, HiCheckCircle } from "react-icons/hi2";
 
 export const dynamic = "force-dynamic";
 
@@ -58,7 +59,7 @@ export default async function AdminOverviewPage() {
       label: "Total Users",
       value: totalUsers.toLocaleString(),
       sub: `+${newUsersThisMonth} this month`,
-      icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z",
+      Icon: HiUsers,
       color: "text-blue-400",
       bg: "bg-blue-400/10",
     },
@@ -66,7 +67,7 @@ export default async function AdminOverviewPage() {
       label: "Est. MRR",
       value: `$${mrr.toLocaleString()}`,
       sub: `${(planCounts.pro ?? 0) + (planCounts.business ?? 0)} paid users`,
-      icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 6v1m0 4v1m0-14a9 9 0 110 18A9 9 0 0112 2z",
+      Icon: HiCurrencyDollar,
       color: "text-green-400",
       bg: "bg-green-400/10",
     },
@@ -74,7 +75,7 @@ export default async function AdminOverviewPage() {
       label: "Total Requests",
       value: totalRequests.toLocaleString(),
       sub: `${requestsThisMonth.toLocaleString()} this month · ${requestsToday} today`,
-      icon: "M13 10V3L4 14h7v7l9-11h-7z",
+      Icon: HiBolt,
       color: "text-yellow-400",
       bg: "bg-yellow-400/10",
     },
@@ -82,7 +83,7 @@ export default async function AdminOverviewPage() {
       label: "Success Rate",
       value: `${successRate}%`,
       sub: `${(totalRequests - successfulRequests).toLocaleString()} failed · avg ${avgLatency}ms`,
-      icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+      Icon: HiCheckCircle,
       color: successRate >= 90 ? "text-green-400" : successRate >= 70 ? "text-yellow-400" : "text-red-400",
       bg: successRate >= 90 ? "bg-green-400/10" : successRate >= 70 ? "bg-yellow-400/10" : "bg-red-400/10",
     },
@@ -113,9 +114,7 @@ export default async function AdminOverviewPage() {
         {stats.map((s) => (
           <div key={s.label} className="rounded-2xl border border-white/10 bg-white/3 p-5">
             <div className={`flex h-9 w-9 items-center justify-center rounded-xl ${s.bg} mb-4`}>
-              <svg className={`h-4.5 w-4.5 ${s.color}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d={s.icon} />
-              </svg>
+              <s.Icon className={`h-5 w-5 ${s.color}`} />
             </div>
             <p className="text-2xl font-extrabold text-white mb-1">{s.value}</p>
             <p className="text-xs font-semibold text-white/30 mb-0.5">{s.label}</p>

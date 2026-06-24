@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
 
 const platforms = [
   { slug: "shopify",     name: "Shopify",         color: "bg-[#96BF48]", label: "S"   },
@@ -36,11 +37,7 @@ export default function LandingNav({ isLoggedIn }: { isLoggedIn: boolean }) {
 
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 shrink-0">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-yellow-400">
-            <svg className="h-4 w-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
+          <Image src="/logonav.png" alt="TryOnAI" width={44} height={44} className="rounded-xl" />
           <span className="text-base font-extrabold tracking-tight">
             TryOn<span className="text-yellow-400">AI</span>
           </span>
@@ -128,12 +125,16 @@ export default function LandingNav({ isLoggedIn }: { isLoggedIn: boolean }) {
             </>
           ) : (
             <>
-              <Link href="/sign-in" className="hidden sm:block text-sm text-white/50 hover:text-white transition px-3 py-2 rounded-xl hover:bg-white/5">
-                Sign in
-              </Link>
-              <Link href="/sign-up" className="rounded-xl bg-yellow-400 px-4 py-2 text-sm font-bold text-black hover:bg-yellow-300 transition">
-                Get started
-              </Link>
+              <SignInButton mode="modal">
+                <button className="hidden sm:block text-sm text-white/50 hover:text-white transition px-3 py-2 rounded-xl hover:bg-white/5 cursor-pointer">
+                  Sign in
+                </button>
+              </SignInButton>
+              <SignUpButton mode="modal">
+                <button className="rounded-xl bg-yellow-400 px-4 py-2 text-sm font-bold text-black hover:bg-yellow-300 transition cursor-pointer">
+                  Get started
+                </button>
+              </SignUpButton>
             </>
           )}
 
@@ -190,12 +191,16 @@ export default function LandingNav({ isLoggedIn }: { isLoggedIn: boolean }) {
               </Link>
             ) : (
               <>
-                <Link href="/sign-in" onClick={() => setMobileOpen(false)} className="text-center px-4 py-2.5 text-sm text-white/60 hover:text-white rounded-xl border border-white/10 hover:bg-white/5 transition">
-                  Sign in
-                </Link>
-                <Link href="/sign-up" onClick={() => setMobileOpen(false)} className="text-center rounded-xl bg-yellow-400 px-4 py-3 text-sm font-bold text-black hover:bg-yellow-300 transition">
-                  Get started free
-                </Link>
+                <SignInButton mode="modal">
+                  <button onClick={() => setMobileOpen(false)} className="w-full text-center px-4 py-2.5 text-sm text-white/60 hover:text-white rounded-xl border border-white/10 hover:bg-white/5 transition cursor-pointer">
+                    Sign in
+                  </button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <button onClick={() => setMobileOpen(false)} className="w-full text-center rounded-xl bg-yellow-400 px-4 py-3 text-sm font-bold text-black hover:bg-yellow-300 transition cursor-pointer">
+                    Get started free
+                  </button>
+                </SignUpButton>
               </>
             )}
           </div>

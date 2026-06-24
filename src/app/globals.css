@@ -21,3 +21,11 @@ body {
 * {
   box-sizing: border-box;
 }
+
+/* Hide Clerk "Secured by Clerk" link (safe — only the link itself).
+   The rest of the branding/dev badge is removed surgically in JS via
+   ClerkBrandingHider so the "Sign up" link is never affected. */
+a[href*="clerk.com"],
+a[href*="clerk.dev"] {
+  display: none !important;
+}

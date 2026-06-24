@@ -1,6 +1,7 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { UserButton } from "@clerk/nextjs";
 import AdminMobileNav from "@/components/AdminMobileNav";
 
@@ -23,11 +24,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <aside className="hidden lg:flex w-56 flex-col bg-[#0d0d0d] border-r border-white/5 fixed inset-y-0 z-40">
         {/* Logo */}
         <div className="flex h-16 items-center gap-2.5 px-5 border-b border-white/5 shrink-0">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-yellow-400 shrink-0">
-            <svg className="h-4 w-4 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
+          <Image src="/logonav.png" alt="TryOnAI" width={32} height={32} className="rounded-xl shrink-0" />
           <div className="flex flex-col">
             <span className="text-base font-extrabold tracking-tight leading-none">
               TryOn<span className="text-yellow-400">AI</span>
@@ -84,11 +81,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       {/* Mobile top bar */}
       <header className="lg:hidden fixed top-0 inset-x-0 h-14 bg-[#0d0d0d] border-b border-white/5 flex items-center justify-between px-4 z-50">
         <div className="flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-yellow-400 shrink-0">
-            <svg className="h-3.5 w-3.5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
+          <Image src="/logonav.png" alt="TryOnAI" width={28} height={28} className="rounded-lg" />
           <div>
             <span className="text-sm font-extrabold leading-none">TryOn<span className="text-yellow-400">AI</span></span>
             <span className="ml-1.5 text-[10px] font-bold text-red-400 uppercase tracking-wider">Admin</span>
