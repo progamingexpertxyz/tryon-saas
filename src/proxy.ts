@@ -7,8 +7,11 @@ const isPublicRoute = createRouteMatcher([
   "/sign-up(.*)",
   "/api/generate-tryon",
   "/api/webhook",
+  "/api/billing/webhook",
   "/widget/(.*)",
 ]);
+
+// Admin routes are protected in their own layout via email check
 
 export default clerkMiddleware(async (auth, req) => {
   if (!isPublicRoute(req)) {

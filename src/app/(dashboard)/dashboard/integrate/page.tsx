@@ -1,17 +1,50 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import React, { useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import {
+  SiShopify,
+  SiWoo,
+  SiWordpress,
+  SiBigcommerce,
+  SiWix,
+  SiSquarespace,
+  SiReact,
+  SiNextdotjs,
+} from "react-icons/si";
+import type { IconType } from "react-icons";
+
+// Custom Magento icon (not in SimpleIcons)
+function MagentoIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 0L0 6.93v10.14L2.77 18.7V8.31L12 13.56l9.23-5.25v10.39L24 17.07V6.93L12 0zm0 3.08l7.08 4.04L12 11.16 4.92 7.12 12 3.08zM2.77 20.21L12 24l9.23-3.79v-1.73L12 22.27l-9.23-3.79v1.73z" />
+    </svg>
+  );
+}
+
+type PlatformIcon = IconType | ((props: { className?: string }) => React.ReactElement);
 
 // ─── Platform guides ──────────────────────────────────────────────────────────
 
-const PLATFORMS = [
+const PLATFORMS: {
+  slug: string;
+  name: string;
+  color: string;
+  bg: string;
+  icon: PlatformIcon;
+  method: string;
+  steps: { title: string; detail: string }[];
+  code: string;
+  codeLabel: string;
+  tip?: string;
+}[] = [
   {
     slug: "shopify",
     name: "Shopify",
     color: "#96BF48",
     bg: "bg-[#96BF48]",
-    label: "S",
+    icon: SiShopify,
     method: "Script Tag",
     steps: [
       { title: "Open Theme Editor", detail: "Shopify Admin → Online Store → Themes → three dots → Edit Code." },
@@ -26,9 +59,9 @@ const PLATFORMS = [
   {
     slug: "woocommerce",
     name: "WooCommerce",
-    color: "#7F54B3",
-    bg: "bg-[#7F54B3]",
-    label: "Woo",
+    color: "#96588A",
+    bg: "bg-[#96588A]",
+    icon: SiWoo,
     method: "Script Tag",
     steps: [
       { title: "Install plugin", detail: "WordPress Admin → Plugins → Add New → search 'Simple Custom CSS and JS' → Install & Activate." },
@@ -45,7 +78,7 @@ const PLATFORMS = [
     name: "WordPress",
     color: "#21759B",
     bg: "bg-[#21759B]",
-    label: "WP",
+    icon: SiWordpress,
     method: "Script Tag",
     steps: [
       { title: "Install header/footer plugin", detail: "Plugins → Add New → search 'Insert Headers and Footers' → Install & Activate." },
@@ -61,7 +94,7 @@ const PLATFORMS = [
     name: "BigCommerce",
     color: "#34313F",
     bg: "bg-[#34313F]",
-    label: "BC",
+    icon: SiBigcommerce,
     method: "Script Manager",
     steps: [
       { title: "Open Script Manager", detail: "BigCommerce Admin → Storefront → Script Manager." },
@@ -76,9 +109,9 @@ const PLATFORMS = [
   {
     slug: "wix",
     name: "Wix",
-    color: "#0C6EFC",
-    bg: "bg-[#0C6EFC]",
-    label: "Wix",
+    color: "#116BFF",
+    bg: "bg-[#116BFF]",
+    icon: SiWix,
     method: "Custom Code",
     steps: [
       { title: "Open Custom Code settings", detail: "In Wix Editor, click the Settings gear → Advanced → Custom Code." },
@@ -92,9 +125,9 @@ const PLATFORMS = [
   {
     slug: "squarespace",
     name: "Squarespace",
-    color: "#1a1a1a",
-    bg: "bg-[#222]",
-    label: "Sqsp",
+    color: "#000000",
+    bg: "bg-[#1a1a1a] ring-1 ring-white/15",
+    icon: SiSquarespace,
     method: "Code Injection",
     steps: [
       { title: "Open Code Injection", detail: "Squarespace → Settings → Advanced → Code Injection." },
@@ -110,7 +143,7 @@ const PLATFORMS = [
     name: "Magento",
     color: "#EE672F",
     bg: "bg-[#EE672F]",
-    label: "M",
+    icon: MagentoIcon,
     method: "HTML Head",
     steps: [
       { title: "Open HTML Head config", detail: "Magento Admin → Content → Configuration → Edit store view → HTML Head." },
@@ -125,9 +158,9 @@ const PLATFORMS = [
   {
     slug: "react",
     name: "React / Next.js",
-    color: "#20232A",
-    bg: "bg-[#61DAFB]",
-    label: "Re",
+    color: "#000000",
+    bg: "bg-black ring-1 ring-white/15",
+    icon: SiNextdotjs,
     method: "Component / Script",
     steps: [
       { title: "Import the component", detail: "Import VirtualTryOn from our React package into your product page component." },
@@ -199,6 +232,7 @@ function IntegrateContent() {
 
   const activeSlug = searchParams.get("platform") ?? "shopify";
   const guide = PLATFORMS.find((p) => p.slug === activeSlug) ?? PLATFORMS[0];
+  const GuideIcon = guide.icon;
 
   const setPlatform = (slug: string) => {
     router.push(`/dashboard/integrate?platform=${slug}`, { scroll: false });
@@ -213,24 +247,27 @@ function IntegrateContent() {
         <p className="text-white/40 mt-1 text-sm">Select your platform to get started</p>
       </div>
 
-      {/* Platform selector grid — TOP */}
+      {/* Platform selector grid */}
       <div className="rounded-2xl border border-white/8 bg-white/3 p-3">
         <div className="grid grid-cols-4 sm:grid-cols-8 gap-1.5">
           {PLATFORMS.map((p) => {
             const isActive = p.slug === activeSlug;
+            const Icon = p.icon;
             return (
               <button
                 key={p.slug}
                 onClick={() => setPlatform(p.slug)}
                 title={p.name}
                 className={`flex flex-col items-center gap-2 rounded-xl px-2 py-3 transition-all group ${
-                  isActive
-                    ? "bg-white/10 ring-1 ring-white/20"
-                    : "hover:bg-white/5"
+                  isActive ? "bg-white/10 ring-1 ring-white/20" : "hover:bg-white/5"
                 }`}
               >
-                <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${p.bg} transition-all ${isActive ? "scale-110 shadow-lg" : "group-hover:scale-105"}`}>
-                  <span className="text-white font-black text-xs leading-none">{p.label}</span>
+                <div
+                  className={`flex h-10 w-10 items-center justify-center rounded-xl transition-all ${p.bg} ${
+                    isActive ? "scale-110 shadow-lg shadow-black/40" : "group-hover:scale-105"
+                  }`}
+                >
+                  <Icon className="h-5 w-5 text-white" />
                 </div>
                 <span className={`text-[10px] font-semibold leading-tight text-center transition-colors line-clamp-2 ${
                   isActive ? "text-white" : "text-white/35 group-hover:text-white/60"
@@ -243,13 +280,13 @@ function IntegrateContent() {
         </div>
       </div>
 
-      {/* Guide content — changes based on selection */}
+      {/* Guide content */}
       <div className="flex flex-col gap-4">
 
         {/* Selected platform header */}
         <div className="flex items-center gap-4 rounded-2xl border border-white/8 bg-white/3 p-5">
           <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${guide.bg}`}>
-            <span className="text-white font-black text-sm leading-none">{guide.label}</span>
+            <GuideIcon className="h-6 w-6 text-white" />
           </div>
           <div className="flex-1">
             <h2 className="text-lg font-extrabold text-white">{guide.name}</h2>

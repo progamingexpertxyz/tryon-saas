@@ -139,7 +139,7 @@ export default function ApiKeysPage() {
       {showForm && (
         <div className="rounded-2xl border border-yellow-400/20 bg-yellow-400/5 p-5">
           <p className="text-sm font-bold text-white mb-3">Create new API key</p>
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-2">
             <input
               type="text"
               value={newName}
@@ -149,19 +149,21 @@ export default function ApiKeysPage() {
               autoFocus
               className="flex-1 rounded-xl border border-white/10 bg-black/30 px-4 py-2.5 text-sm text-white placeholder-white/25 outline-none focus:border-yellow-400/50 focus:ring-1 focus:ring-yellow-400/20 transition"
             />
-            <button
-              onClick={createKey}
-              disabled={creating}
-              className="rounded-xl bg-yellow-400 px-5 py-2.5 text-sm font-bold text-black hover:bg-yellow-300 transition disabled:opacity-50"
-            >
-              {creating ? "Creating..." : "Create"}
-            </button>
-            <button
-              onClick={() => { setShowForm(false); setError(null); setNewName(""); }}
-              className="rounded-xl border border-white/10 px-4 py-2.5 text-sm font-semibold text-white/50 hover:text-white hover:bg-white/5 transition"
-            >
-              Cancel
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={createKey}
+                disabled={creating}
+                className="flex-1 sm:flex-none rounded-xl bg-yellow-400 px-5 py-2.5 text-sm font-bold text-black hover:bg-yellow-300 transition disabled:opacity-50"
+              >
+                {creating ? "Creating..." : "Create"}
+              </button>
+              <button
+                onClick={() => { setShowForm(false); setError(null); setNewName(""); }}
+                className="flex-1 sm:flex-none rounded-xl border border-white/10 px-4 py-2.5 text-sm font-semibold text-white/50 hover:text-white hover:bg-white/5 transition"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
           {error && <p className="text-xs text-red-400 mt-3">{error}</p>}
         </div>
