@@ -665,7 +665,7 @@ export default async function LandingPage() {
 
       {/* FOOTER */}
       <footer className="border-t border-white/5 pt-16 pb-10">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+        <div className="w-full px-6 sm:px-10">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
             <div className="lg:col-span-1">
               <Link href="/" className="inline-block mb-4">

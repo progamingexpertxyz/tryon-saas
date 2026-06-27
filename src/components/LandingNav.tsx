@@ -51,7 +51,7 @@ export default function LandingNav({ isLoggedIn }: { isLoggedIn: boolean }) {
 
   return (
     <nav className="sticky top-0 z-50 border-b border-white/6 bg-[#0a0a0a]/80 backdrop-blur-2xl">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 flex h-16 items-center justify-between gap-6">
+      <div className="w-full px-6 sm:px-10 flex h-16 items-center justify-between gap-6">
 
         {/* Logo */}
         <Link href="/" className="shrink-0">
