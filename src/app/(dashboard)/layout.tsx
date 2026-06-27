@@ -16,11 +16,14 @@ export default async function DashboardLayout({ children }: { children: React.Re
       {/* Sidebar — desktop */}
       <aside className="hidden lg:flex w-64 flex-col bg-[#0d0d0d] border-r border-white/5 fixed inset-y-0 z-40">
         {/* Logo */}
-        <div className="flex h-16 items-center gap-2.5 px-5 border-b border-white/5 shrink-0">
-          <Link href="/">
-            <Image src="/logo3.png" alt="TryOnAI" width={44} height={44} />
+        <div className="flex h-20 items-center gap-3 px-5 border-b border-white/5 shrink-0">
+          <Link href="/" className="shrink-0">
+            <Image src="/logo3.png" alt="TryOnAI" width={64} height={64} />
           </Link>
-          <span className="ml-auto text-[10px] font-bold tracking-widest text-white/20 uppercase">Beta</span>
+          <div className="flex flex-col min-w-0">
+            <span className="text-xs font-bold text-white/70 tracking-wide truncate">Dashboard</span>
+            <span className="text-[10px] text-white/25 truncate">TryOnAI</span>
+          </div>
         </div>
 
         {/* Nav links (client component for active state) */}
@@ -39,9 +42,12 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
       {/* Mobile top bar */}
       <header className="lg:hidden fixed top-0 inset-x-0 h-14 bg-[#0d0d0d] border-b border-white/5 flex items-center justify-between px-4 z-50">
-        <Link href="/">
-          <Image src="/logo3.png" alt="TryOnAI" width={38} height={38} />
-        </Link>
+        <div className="flex items-center gap-2.5">
+          <Link href="/">
+            <Image src="/logo3.png" alt="TryOnAI" width={44} height={44} />
+          </Link>
+          <span className="text-xs font-bold text-white/60">Dashboard</span>
+        </div>
         <UserButton />
       </header>
 
