@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import ClerkBrandingHider from "@/components/ClerkBrandingHider";
+import { ToastProvider } from "@/components/Toast";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <body className="min-h-full flex flex-col bg-[#0a0a0a] text-white">
           <ClerkBrandingHider />
           {children}
+          <ToastProvider />
         </body>
       </html>
     </ClerkProvider>

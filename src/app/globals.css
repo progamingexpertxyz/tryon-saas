@@ -29,3 +29,38 @@ a[href*="clerk.com"],
 a[href*="clerk.dev"] {
   display: none !important;
 }
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+.platform-icon {
+  animation: float 3s ease-in-out infinite;
+}
+
+.platform-icon:hover {
+  animation-play-state: paused;
+}
+
+.platform-icon:hover .icon-box {
+  transform: translateY(-4px) scale(1.1);
+  transition: transform 0.25s ease;
+}
+
+.icon-box {
+  transition: transform 0.25s ease;
+}

@@ -17,9 +17,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
       <aside className="hidden lg:flex w-64 flex-col bg-[#0d0d0d] border-r border-white/5 fixed inset-y-0 z-40">
         {/* Logo */}
         <div className="flex h-16 items-center gap-2.5 px-5 border-b border-white/5 shrink-0">
-          <Image src="/logonav.png" alt="TryOnAI" width={32} height={32} className="rounded-xl shrink-0" />
-          <Link href="/" className="text-base font-extrabold tracking-tight">
-            TryOn<span className="text-yellow-400">AI</span>
+          <Link href="/">
+            <Image src="/logo2.png" alt="TryOnAI" width={44} height={44} />
           </Link>
           <span className="ml-auto text-[10px] font-bold tracking-widest text-white/20 uppercase">Beta</span>
         </div>
@@ -40,10 +39,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
       {/* Mobile top bar */}
       <header className="lg:hidden fixed top-0 inset-x-0 h-14 bg-[#0d0d0d] border-b border-white/5 flex items-center justify-between px-4 z-50">
-        <div className="flex items-center gap-2">
-          <Image src="/logonav.png" alt="TryOnAI" width={28} height={28} className="rounded-lg" />
-          <Link href="/" className="text-sm font-extrabold">TryOn<span className="text-yellow-400">AI</span></Link>
-        </div>
+        <Link href="/">
+          <Image src="/logo2.png" alt="TryOnAI" width={38} height={38} />
+        </Link>
         <UserButton />
       </header>
 

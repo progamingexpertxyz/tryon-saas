@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { toast } from "@/components/Toast";
 
 interface ApiKey {
   id: string;
@@ -89,17 +90,19 @@ export default function ApiKeysPage() {
       body: JSON.stringify({ name: newName.trim() }),
     });
     const data = await res.json();
-    if (!res.ok) { setError(data.error); setCreating(false); return; }
+    if (!res.ok) { setError(data.error); setCreating(false); toast(data.error ?? "Failed to create key", "error"); return; }
     setKeys((prev) => [data.key, ...prev]);
     setNewName("");
     setShowForm(false);
     setCreating(false);
+    toast("API key created successfully");
   };
 
   const deleteKey = async (id: string) => {
     if (!confirm("Delete this API key? Any integrations using it will stop working.")) return;
     await fetch(`/api/keys/${id}`, { method: "DELETE" });
     setKeys((prev) => prev.filter((k) => k.id !== id));
+    toast("API key deleted", "info");
   };
 
   const toggleKey = async (id: string, isActive: boolean) => {
@@ -110,6 +113,7 @@ export default function ApiKeysPage() {
     });
     const data = await res.json();
     setKeys((prev) => prev.map((k) => k.id === id ? data.key : k));
+    toast(isActive ? "Key disabled" : "Key enabled", "info");
   };
 
   const maskedKey = (key: string) => key.slice(0, 14) + "••••••••••••" + key.slice(-4);
@@ -124,8 +128,12 @@ export default function ApiKeysPage() {
           <p className="text-white/40 mt-1 text-sm">{keys.length} of 5 keys created</p>
         </div>
         <button
-          onClick={() => { setShowForm(true); setError(null); }}
+          onClick={() => {
+            if (keys.length >= 5) { toast("You've reached the 5-key limit. Delete an existing key to create a new one.", "error"); return; }
+            setShowForm(true); setError(null);
+          }}
           disabled={keys.length >= 5}
+          title={keys.length >= 5 ? "5-key limit reached — delete an existing key first" : undefined}
           className="flex items-center gap-2 rounded-xl bg-yellow-400 px-4 py-2.5 text-sm font-bold text-black hover:bg-yellow-300 transition disabled:opacity-40 disabled:cursor-not-allowed"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

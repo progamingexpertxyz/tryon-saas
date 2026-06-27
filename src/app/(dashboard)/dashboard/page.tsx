@@ -1,6 +1,7 @@
 import { getOrCreateUser } from "@/lib/clerk";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import { PLAN_DISPLAY } from "@/lib/plans";
 
 export default async function DashboardPage() {
   const user = await getOrCreateUser();
@@ -16,6 +17,8 @@ export default async function DashboardPage() {
 
   const totalLimit = keys.reduce((s: number, k: { usageLimit: number }) => s + k.usageLimit, 0);
   const totalUsed = keys.reduce((s: number, k: { usageCount: number }) => s + k.usageCount, 0);
+  const planLimit = PLAN_DISPLAY[user.plan as keyof typeof PLAN_DISPLAY]?.requestsPerMonth ?? 100;
+  const usagePct = planLimit > 0 ? Math.round((user.monthlyUsageCount / planLimit) * 100) : 0;
 
   const stats = [
     { label: "Total Requests", value: totalRequests.toString(), icon: "M13 10V3L4 14h7v7l9-11h-7z" },
@@ -36,6 +39,67 @@ export default async function DashboardPage() {
         <h1 className="text-2xl font-extrabold text-white">Overview</h1>
         <p className="text-white/40 mt-1 text-sm">Welcome back, {user.name || user.email}</p>
       </div>
+
+      {/* Plan limit warning at 80%+ */}
+      {usagePct >= 80 && (
+        <div className={`rounded-2xl border px-5 py-4 flex items-start gap-3 ${
+          usagePct >= 100
+            ? "border-red-400/30 bg-red-400/8"
+            : "border-yellow-400/30 bg-yellow-400/8"
+        }`}>
+          <svg className={`h-5 w-5 shrink-0 mt-0.5 ${usagePct >= 100 ? "text-red-400" : "text-yellow-400"}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <div className="flex-1 min-w-0">
+            <p className={`text-sm font-bold ${usagePct >= 100 ? "text-red-400" : "text-yellow-400"}`}>
+              {usagePct >= 100 ? "Monthly limit reached" : `${usagePct}% of monthly limit used`}
+            </p>
+            <p className="text-xs text-white/40 mt-0.5">
+              {usagePct >= 100
+                ? "New try-on requests are blocked until your limit resets."
+                : "You're approaching your plan limit. Upgrade to avoid interruptions."}
+            </p>
+          </div>
+          <Link href="/dashboard/settings" className="shrink-0 rounded-lg bg-yellow-400 px-3 py-1.5 text-xs font-bold text-black hover:bg-yellow-300 transition">
+            Upgrade
+          </Link>
+        </div>
+      )}
+
+      {/* Onboarding banner — shown only when user has no keys yet */}
+      {keys.length === 0 && (
+        <div className="rounded-2xl border border-yellow-400/25 bg-yellow-400/5 p-6">
+          <div className="flex items-start gap-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-yellow-400/15 border border-yellow-400/20">
+              <svg className="h-5 w-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold text-white mb-1">Get started in 3 steps</p>
+              <ol className="flex flex-col gap-2 mt-3">
+                {[
+                  { step: "1", text: "Create an API key", href: "/dashboard/api-keys", cta: "Create key →" },
+                  { step: "2", text: "Add one script tag to your store", href: "/dashboard/integrate", cta: "Integration guide →" },
+                  { step: "3", text: "Your shoppers can now try on products instantly", href: null, cta: null },
+                ].map((s) => (
+                  <li key={s.step} className="flex items-center gap-3">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-yellow-400/20 text-yellow-400 text-[10px] font-extrabold">
+                      {s.step}
+                    </span>
+                    <span className="text-sm text-white/60 flex-1">{s.text}</span>
+                    {s.href && s.cta && (
+                      <Link href={s.href} className="text-xs font-semibold text-yellow-400 hover:text-yellow-300 transition shrink-0">
+                        {s.cta}
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">

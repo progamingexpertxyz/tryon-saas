@@ -23,14 +23,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex w-56 flex-col bg-[#0d0d0d] border-r border-white/5 fixed inset-y-0 z-40">
         {/* Logo */}
-        <div className="flex h-16 items-center gap-2.5 px-5 border-b border-white/5 shrink-0">
-          <Image src="/logonav.png" alt="TryOnAI" width={32} height={32} className="rounded-xl shrink-0" />
-          <div className="flex flex-col">
-            <span className="text-base font-extrabold tracking-tight leading-none">
-              TryOn<span className="text-yellow-400">AI</span>
-            </span>
-            <span className="text-[10px] font-bold tracking-widest text-red-400 uppercase mt-0.5">Admin</span>
-          </div>
+        <div className="flex h-16 items-center gap-3 px-5 border-b border-white/5 shrink-0">
+          <Link href="/">
+            <Image src="/logo2.png" alt="TryOnAI" width={44} height={44} />
+          </Link>
+          <span className="text-[10px] font-bold tracking-widest text-red-400 uppercase">Admin</span>
         </div>
 
         {/* Nav */}
@@ -80,12 +77,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
       {/* Mobile top bar */}
       <header className="lg:hidden fixed top-0 inset-x-0 h-14 bg-[#0d0d0d] border-b border-white/5 flex items-center justify-between px-4 z-50">
-        <div className="flex items-center gap-2">
-          <Image src="/logonav.png" alt="TryOnAI" width={28} height={28} className="rounded-lg" />
-          <div>
-            <span className="text-sm font-extrabold leading-none">TryOn<span className="text-yellow-400">AI</span></span>
-            <span className="ml-1.5 text-[10px] font-bold text-red-400 uppercase tracking-wider">Admin</span>
-          </div>
+        <div className="flex items-center gap-2.5">
+          <Link href="/">
+            <Image src="/logo2.png" alt="TryOnAI" width={38} height={38} />
+          </Link>
+          <span className="text-[10px] font-bold text-red-400 uppercase tracking-wider">Admin</span>
         </div>
         <UserButton />
       </header>

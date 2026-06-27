@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useClerk } from "@clerk/nextjs";
 import { PLAN_DISPLAY } from "@/lib/plans";
+import { toast } from "@/components/Toast";
 
 type UserBilling = {
   plan: "free" | "pro" | "business";
@@ -20,9 +22,11 @@ export default function SettingsPage() {
   const [loading, setLoading] = useState(true);
   const [upgrading, setUpgrading] = useState<string | null>(null);
   const [openingPortal, setOpeningPortal] = useState(false);
+  const [deletingAccount, setDeletingAccount] = useState(false);
   const router = useRouter();
   const params = useSearchParams();
   const upgraded = params.get("upgraded");
+  const { signOut } = useClerk();
 
   useEffect(() => {
     fetch("/api/billing/info")
@@ -49,6 +53,27 @@ export default function SettingsPage() {
     }
   }
 
+  async function handleDeleteAccount() {
+    const confirmed = confirm(
+      "Are you sure you want to delete your account? This will permanently delete all your API keys, usage data, and cancel any active subscription. This cannot be undone."
+    );
+    if (!confirmed) return;
+    setDeletingAccount(true);
+    try {
+      const res = await fetch("/api/account", { method: "DELETE" });
+      if (res.ok) {
+        await signOut();
+        router.push("/");
+      } else {
+        toast("Failed to delete account. Please try again.", "error");
+      }
+    } catch {
+      toast("Something went wrong. Please try again.", "error");
+    } finally {
+      setDeletingAccount(false);
+    }
+  }
+
   async function handlePortal() {
     setOpeningPortal(true);
     try {
@@ -70,7 +95,12 @@ export default function SettingsPage() {
     );
   }
 
-  if (!billing) return null;
+  if (!billing) return (
+    <div className="rounded-2xl border border-red-400/20 bg-red-400/5 px-6 py-10 text-center">
+      <p className="text-sm font-semibold text-red-400 mb-1">Failed to load billing info</p>
+      <p className="text-xs text-white/30">Please refresh the page to try again.</p>
+    </div>
+  );
 
   const currentPlan = PLAN_DISPLAY[billing.plan] ?? PLAN_DISPLAY.free;
   const usagePct = Math.min(100, Math.round((billing.monthlyUsageCount / currentPlan.requestsPerMonth) * 100));
@@ -216,6 +246,21 @@ export default function SettingsPage() {
             <span className="text-white font-medium">{billing.email}</span>
           </div>
         </div>
+      </div>
+
+      {/* Danger zone */}
+      <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-6">
+        <h3 className="text-sm font-bold text-red-400 mb-1">Danger Zone</h3>
+        <p className="text-xs text-white/30 mb-4">
+          Deleting your account is permanent. All API keys, usage data, and your subscription will be cancelled immediately.
+        </p>
+        <button
+          onClick={handleDeleteAccount}
+          disabled={deletingAccount}
+          className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-sm font-semibold text-red-400 hover:bg-red-500/20 transition disabled:opacity-50"
+        >
+          {deletingAccount ? "Deleting..." : "Delete my account"}
+        </button>
       </div>
     </div>
   );

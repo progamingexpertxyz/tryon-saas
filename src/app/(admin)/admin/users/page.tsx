@@ -3,14 +3,39 @@ import { PLAN_DISPLAY } from "@/lib/plans";
 
 export const dynamic = "force-dynamic";
 
+type SortField = "createdAt" | "plan" | "monthlyUsageCount" | "apiKeys";
+type SortOrder = "asc" | "desc";
+
+function SortHeader({
+  label, field, currentField, currentOrder, search,
+}: {
+  label: string; field: SortField; currentField: SortField; currentOrder: SortOrder; search: string;
+}) {
+  const isActive = currentField === field;
+  const nextOrder = isActive && currentOrder === "desc" ? "asc" : "desc";
+  return (
+    <a
+      href={`/admin/users?search=${search}&sort=${field}&order=${nextOrder}`}
+      className={`flex items-center gap-1 group ${isActive ? "text-yellow-400" : "text-white/30 hover:text-white/60"}`}
+    >
+      {label}
+      <span className="text-[10px]">
+        {isActive ? (currentOrder === "desc" ? "↓" : "↑") : "↕"}
+      </span>
+    </a>
+  );
+}
+
 export default async function AdminUsersPage({
   searchParams,
 }: {
-  searchParams: Promise<{ search?: string; page?: string }>;
+  searchParams: Promise<{ search?: string; page?: string; sort?: string; order?: string }>;
 }) {
-  const { search = "", page: pageStr = "1" } = await searchParams;
+  const { search = "", page: pageStr = "1", sort = "createdAt", order = "desc" } = await searchParams;
   const page = Math.max(1, parseInt(pageStr));
   const limit = 20;
+  const sortField = (["createdAt", "plan", "monthlyUsageCount"].includes(sort) ? sort : "createdAt") as SortField;
+  const sortOrder = (order === "asc" ? "asc" : "desc") as SortOrder;
 
   const where = search
     ? {
@@ -21,10 +46,14 @@ export default async function AdminUsersPage({
       }
     : {};
 
+  const orderBy = sort === "apiKeys"
+    ? { apiKeys: { _count: sortOrder } }
+    : { [sortField]: sortOrder };
+
   const [users, total] = await Promise.all([
     prisma.user.findMany({
       where,
-      orderBy: { createdAt: "desc" },
+      orderBy,
       skip: (page - 1) * limit,
       take: limit,
       select: {
@@ -52,6 +81,8 @@ export default async function AdminUsersPage({
 
       {/* Search */}
       <form method="GET" className="flex gap-3">
+        <input type="hidden" name="sort" value={sortField} />
+        <input type="hidden" name="order" value={sortOrder} />
         <input
           type="text"
           name="search"
@@ -81,11 +112,21 @@ export default async function AdminUsersPage({
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/5 text-left">
-                <th className="px-5 py-3.5 text-xs font-bold text-white/30 uppercase tracking-wider">User</th>
-                <th className="px-5 py-3.5 text-xs font-bold text-white/30 uppercase tracking-wider">Plan</th>
-                <th className="px-5 py-3.5 text-xs font-bold text-white/30 uppercase tracking-wider">Usage</th>
-                <th className="px-5 py-3.5 text-xs font-bold text-white/30 uppercase tracking-wider">API Keys</th>
-                <th className="px-5 py-3.5 text-xs font-bold text-white/30 uppercase tracking-wider">Joined</th>
+                <th className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider">
+                  <span className="text-white/30">User</span>
+                </th>
+                <th className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider">
+                  <SortHeader label="Plan" field="plan" currentField={sortField} currentOrder={sortOrder} search={search} />
+                </th>
+                <th className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider">
+                  <SortHeader label="Usage" field="monthlyUsageCount" currentField={sortField} currentOrder={sortOrder} search={search} />
+                </th>
+                <th className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider">
+                  <SortHeader label="API Keys" field="apiKeys" currentField={sortField} currentOrder={sortOrder} search={search} />
+                </th>
+                <th className="px-5 py-3.5 text-xs font-bold uppercase tracking-wider">
+                  <SortHeader label="Joined" field="createdAt" currentField={sortField} currentOrder={sortOrder} search={search} />
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -152,7 +193,7 @@ export default async function AdminUsersPage({
             <div className="flex gap-2">
               {page > 1 && (
                 <a
-                  href={`/admin/users?search=${search}&page=${page - 1}`}
+                  href={`/admin/users?search=${search}&sort=${sortField}&order=${sortOrder}&page=${page - 1}`}
                   className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/60 hover:text-white transition"
                 >
                   ← Prev
@@ -160,7 +201,7 @@ export default async function AdminUsersPage({
               )}
               {page < pages && (
                 <a
-                  href={`/admin/users?search=${search}&page=${page + 1}`}
+                  href={`/admin/users?search=${search}&sort=${sortField}&order=${sortOrder}&page=${page + 1}`}
                   className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/60 hover:text-white transition"
                 >
                   Next →

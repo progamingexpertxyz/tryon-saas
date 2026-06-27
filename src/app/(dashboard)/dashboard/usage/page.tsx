@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 interface Request {
   id: string;
@@ -19,15 +19,74 @@ interface UsageData {
   recentRequests: Request[];
 }
 
+type Range = "7d" | "30d" | "all";
+
+function MiniBarChart({ requests }: { requests: Request[] }) {
+  const days = useMemo(() => {
+    const map: Record<string, { ok: number; fail: number }> = {};
+    const now = new Date();
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(now);
+      d.setDate(d.getDate() - i);
+      map[d.toISOString().slice(0, 10)] = { ok: 0, fail: 0 };
+    }
+    requests.forEach((r) => {
+      const key = r.createdAt.slice(0, 10);
+      if (map[key]) r.success ? map[key].ok++ : map[key].fail++;
+    });
+    return Object.entries(map).map(([date, v]) => ({ date, ...v }));
+  }, [requests]);
+
+  const max = Math.max(...days.map((d) => d.ok + d.fail), 1);
+
+  return (
+    <div className="rounded-2xl border border-white/8 bg-white/3 p-5">
+      <div className="flex items-center justify-between mb-4">
+        <p className="text-sm font-bold text-white">Requests — last 7 days</p>
+        <div className="flex items-center gap-4 text-xs text-white/35">
+          <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-green-400" />Success</span>
+          <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-red-400" />Failed</span>
+        </div>
+      </div>
+      <div className="flex items-end gap-1.5 h-24">
+        {days.map((d) => {
+          const total = d.ok + d.fail;
+          const okPct = total > 0 ? (d.ok / max) * 100 : 0;
+          const failPct = total > 0 ? (d.fail / max) * 100 : 0;
+          return (
+            <div key={d.date} className="flex-1 flex flex-col justify-end gap-0.5 group" title={`${d.date}: ${d.ok} ok, ${d.fail} failed`}>
+              {failPct > 0 && <div className="rounded-t-sm bg-red-400/70" style={{ height: `${failPct}%` }} />}
+              {okPct > 0 && <div className={`${failPct > 0 ? "" : "rounded-t-sm"} bg-green-400/70`} style={{ height: `${okPct}%` }} />}
+              {total === 0 && <div className="h-1 rounded-full bg-white/10" />}
+              <span className="text-[9px] text-white/20 text-center mt-1 leading-none">
+                {new Date(d.date).toLocaleDateString("en-US", { weekday: "short" }).slice(0, 1)}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function UsagePage() {
   const [data, setData] = useState<UsageData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [range, setRange] = useState<Range>("all");
 
   useEffect(() => {
     fetch("/api/usage")
       .then((r) => r.json())
       .then((d) => { setData(d); setLoading(false); });
   }, []);
+
+  const filteredRequests = useMemo(() => {
+    if (!data) return [];
+    if (range === "all") return data.recentRequests;
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - (range === "7d" ? 7 : 30));
+    return data.recentRequests.filter((r) => new Date(r.createdAt) >= cutoff);
+  }, [data, range]);
 
   if (loading) {
     return (
@@ -44,7 +103,12 @@ export default function UsagePage() {
     );
   }
 
-  if (!data) return null;
+  if (!data) return (
+    <div className="rounded-2xl border border-red-400/20 bg-red-400/5 px-6 py-10 text-center">
+      <p className="text-sm font-semibold text-red-400 mb-1">Failed to load usage data</p>
+      <p className="text-xs text-white/30">Please refresh the page to try again.</p>
+    </div>
+  );
 
   const successRate = data.totalRequests > 0
     ? Math.round((data.successfulRequests / data.totalRequests) * 100)
@@ -117,6 +181,9 @@ export default function UsagePage() {
         ))}
       </div>
 
+      {/* Bar chart */}
+      {data.recentRequests.length > 0 && <MiniBarChart requests={data.recentRequests} />}
+
       {/* Breakdown bar */}
       {data.totalRequests > 0 && (
         <div className="rounded-2xl border border-white/8 bg-white/3 p-5">
@@ -144,12 +211,24 @@ export default function UsagePage() {
 
       {/* Table */}
       <div className="rounded-2xl border border-white/8 bg-white/3 overflow-hidden">
-        <div className="px-5 py-4 border-b border-white/5 flex items-center justify-between">
+        <div className="px-5 py-4 border-b border-white/5 flex items-center justify-between gap-3 flex-wrap">
           <h2 className="text-sm font-bold text-white">Recent Requests</h2>
-          <span className="text-xs text-white/30 bg-white/5 rounded-full px-2.5 py-1">Last 50</span>
+          <div className="flex items-center gap-1 rounded-xl border border-white/8 bg-white/3 p-1">
+            {(["7d", "30d", "all"] as Range[]).map((r) => (
+              <button
+                key={r}
+                onClick={() => setRange(r)}
+                className={`px-3 py-1 rounded-lg text-xs font-semibold transition ${
+                  range === r ? "bg-yellow-400 text-black" : "text-white/40 hover:text-white"
+                }`}
+              >
+                {r === "7d" ? "7 days" : r === "30d" ? "30 days" : "All"}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {data.recentRequests.length === 0 ? (
+        {filteredRequests.length === 0 ? (
           <div className="px-6 py-16 text-center">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 border border-white/8 mx-auto mb-4">
               <svg className="h-5 w-5 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -172,7 +251,7 @@ export default function UsagePage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
-                {data.recentRequests.map((req) => (
+                {filteredRequests.map((req) => (
                   <tr key={req.id} className="hover:bg-white/3 transition-colors group">
                     <td className="px-5 py-3.5">
                       <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
