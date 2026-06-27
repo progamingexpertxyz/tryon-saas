@@ -669,7 +669,7 @@ export default async function LandingPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
             <div className="lg:col-span-1">
               <Link href="/" className="inline-block mb-4">
-                <Image src="/logo2.png" alt="TryOnAI" width={120} height={120} />
+                <Image src="/logo3.png" alt="TryOnAI" width={120} height={120} />
               </Link>
               <p className="text-sm text-white/35 leading-relaxed max-w-[200px]">
                 AI virtual try-on for every eCommerce store. One line of code, any platform.

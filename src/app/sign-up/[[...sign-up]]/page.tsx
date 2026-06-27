@@ -9,7 +9,7 @@ export default function SignUpPage() {
       {/* Left panel — branding */}
       <div className="hidden lg:flex flex-col justify-between w-1/2 bg-[#0d0d0d] border-r border-white/5 p-12">
         <Link href="/">
-          <Image src="/logo2.png" alt="TryOnAI" width={60} height={60} />
+          <Image src="/logo3.png" alt="TryOnAI" width={60} height={60} />
         </Link>
 
         <div>
@@ -46,7 +46,7 @@ export default function SignUpPage() {
       <div className="flex flex-1 flex-col items-center justify-center px-4 py-12 gap-6">
         {/* Mobile logo */}
         <Link href="/" className="lg:hidden mb-2">
-          <Image src="/logo2.png" alt="TryOnAI" width={48} height={48} />
+          <Image src="/logo3.png" alt="TryOnAI" width={48} height={48} />
         </Link>
 
         <SignUp />

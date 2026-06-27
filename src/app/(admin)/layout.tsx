@@ -25,7 +25,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         {/* Logo */}
         <div className="flex h-16 items-center gap-3 px-5 border-b border-white/5 shrink-0">
           <Link href="/">
-            <Image src="/logo2.png" alt="TryOnAI" width={44} height={44} />
+            <Image src="/logo3.png" alt="TryOnAI" width={44} height={44} />
           </Link>
           <span className="text-[10px] font-bold tracking-widest text-red-400 uppercase">Admin</span>
         </div>
@@ -79,7 +79,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <header className="lg:hidden fixed top-0 inset-x-0 h-14 bg-[#0d0d0d] border-b border-white/5 flex items-center justify-between px-4 z-50">
         <div className="flex items-center gap-2.5">
           <Link href="/">
-            <Image src="/logo2.png" alt="TryOnAI" width={38} height={38} />
+            <Image src="/logo3.png" alt="TryOnAI" width={38} height={38} />
           </Link>
           <span className="text-[10px] font-bold text-red-400 uppercase tracking-wider">Admin</span>
         </div>

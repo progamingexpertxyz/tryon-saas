@@ -55,7 +55,7 @@ export default function LandingNav({ isLoggedIn }: { isLoggedIn: boolean }) {
 
         {/* Logo */}
         <Link href="/" className="shrink-0">
-          <Image src="/logo2.png" alt="TryOnAI" width={64} height={64} />
+          <Image src="/logo3.png" alt="TryOnAI" width={64} height={64} />
         </Link>
 
         {/* Center nav — desktop */}
