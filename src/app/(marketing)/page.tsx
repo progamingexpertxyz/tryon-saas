@@ -3,6 +3,7 @@ import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
 import { SignUpButton } from "@clerk/nextjs";
 import LandingNav from "@/components/LandingNav";
+import { TestimonialsColumn } from "@/components/ui/testimonials-columns";
 import {
   SiShopify, SiWoo, SiWordpress, SiBigcommerce,
   SiWix, SiSquarespace, SiNextdotjs,
@@ -70,27 +71,64 @@ const features = [
 
 const testimonials = [
   {
-    quote: "We integrated TryOnAI into our Shopify store in literally 10 minutes. Conversion on product pages with try-on is up 34% since launch.",
-    name: "Sarah M.",
+    text: "We integrated TryOnAI into our Shopify store in literally 10 minutes. Conversion on product pages with try-on is up 34% since launch.",
+    image: "https://randomuser.me/api/portraits/women/1.jpg",
+    name: "Sarah Mitchell",
     role: "Founder, Boutique Fashion Store",
-    initials: "SM",
-    color: "bg-pink-500",
   },
   {
-    quote: "Our WooCommerce customers love it. The try-on button just appears on every product page automatically. Zero ongoing maintenance.",
-    name: "James K.",
+    text: "Our WooCommerce customers love it. The try-on button just appears on every product page automatically. Zero ongoing maintenance.",
+    image: "https://randomuser.me/api/portraits/men/2.jpg",
+    name: "James Keller",
     role: "Head of eCommerce, Lifestyle Brand",
-    initials: "JK",
-    color: "bg-blue-500",
   },
   {
-    quote: "Finally a virtual try-on that doesn't require a six-month dev project. The API key took 30 seconds, the script tag took another 30.",
-    name: "Priya N.",
+    text: "Finally a virtual try-on that doesn't require a six-month dev project. The API key took 30 seconds, the script tag took another 30.",
+    image: "https://randomuser.me/api/portraits/women/3.jpg",
+    name: "Priya Nair",
     role: "CTO, Online Apparel Startup",
-    initials: "PN",
-    color: "bg-violet-500",
+  },
+  {
+    text: "Our return rate dropped 22% after adding TryOnAI. Shoppers actually know how clothes will look before buying. Game changer.",
+    image: "https://randomuser.me/api/portraits/men/4.jpg",
+    name: "Omar Raza",
+    role: "CEO, Fashion eCommerce",
+  },
+  {
+    text: "Setup was literally copy-paste. I had the try-on widget live on my Wix store in under 5 minutes. Incredible product.",
+    image: "https://randomuser.me/api/portraits/women/5.jpg",
+    name: "Zainab Hussain",
+    role: "Store Owner, Wix",
+  },
+  {
+    text: "The analytics dashboard alone is worth it. I can see exactly which products get the most try-ons and which convert best.",
+    image: "https://randomuser.me/api/portraits/women/6.jpg",
+    name: "Aliza Khan",
+    role: "Business Analyst, Retail Brand",
+  },
+  {
+    text: "Our Shopify Plus store serves thousands of visitors daily. TryOnAI handles the load without a single hiccup. Rock-solid.",
+    image: "https://randomuser.me/api/portraits/men/7.jpg",
+    name: "Farhan Siddiqui",
+    role: "Head of Technology, Fashion Chain",
+  },
+  {
+    text: "I was skeptical about AI try-on but the results look genuinely realistic. Our customers keep coming back to use it.",
+    image: "https://randomuser.me/api/portraits/women/8.jpg",
+    name: "Sana Sheikh",
+    role: "Founder, Clothing Brand",
+  },
+  {
+    text: "Switched from a competitor and the difference is night and day. Faster, cleaner output and the integration is half the code.",
+    image: "https://randomuser.me/api/portraits/men/9.jpg",
+    name: "Hassan Ali",
+    role: "E-commerce Manager",
   },
 ];
+
+const firstColumn = testimonials.slice(0, 3);
+const secondColumn = testimonials.slice(3, 6);
+const thirdColumn = testimonials.slice(6, 9);
 
 const faqs = [
   {
@@ -580,38 +618,24 @@ export default async function LandingPage() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="py-28 border-t border-white/5">
+      <section className="py-28 border-t border-white/5 overflow-hidden">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
-          <div className="text-center mb-16">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-yellow-400 mb-4">Testimonials</p>
-            <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-5">
-              Stores that ship with TryOnAI
+          <div className="text-center mb-14">
+            <span className="inline-flex items-center rounded-full border border-yellow-400/25 bg-yellow-400/10 px-3 py-1 text-xs font-semibold text-yellow-400 mb-5">
+              Testimonials
+            </span>
+            <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4">
+              What our users say
             </h2>
+            <p className="text-white/45 text-base max-w-md mx-auto">
+              See what store owners and developers have to say about TryOnAI.
+            </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {testimonials.map((t) => (
-              <div key={t.name} className="rounded-2xl border border-white/8 bg-white/[0.03] p-7 flex flex-col gap-5">
-                {/* Stars */}
-                <div className="flex gap-0.5">
-                  {[1,2,3,4,5].map((i) => (
-                    <svg key={i} className="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-sm text-white/55 leading-relaxed flex-1">&ldquo;{t.quote}&rdquo;</p>
-                <div className="flex items-center gap-3">
-                  <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${t.color} text-white text-xs font-extrabold`}>
-                    {t.initials}
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold text-white">{t.name}</p>
-                    <p className="text-xs text-white/35">{t.role}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+        </div>
+        <div className="flex justify-center gap-6 [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)] max-h-[680px] overflow-hidden">
+          <TestimonialsColumn testimonials={firstColumn} duration={15} />
+          <TestimonialsColumn testimonials={secondColumn} className="hidden md:block" duration={19} />
+          <TestimonialsColumn testimonials={thirdColumn} className="hidden lg:block" duration={17} />
         </div>
       </section>
 
