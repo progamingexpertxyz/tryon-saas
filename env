@@ -1,0 +1,29 @@
+# Environment variables declared in this file are NOT automatically loaded by Prisma.
+# Please add `import "dotenv/config";` to your `prisma.config.ts` file, or use the Prisma CLI with Bun
+# to load environment variables from .env files: https://pris.ly/prisma-config-env-vars.
+
+# Prisma supports the native connection string format for PostgreSQL, MySQL, SQLite, SQL Server, MongoDB and CockroachDB.
+# See the documentation for all the connection string options: https://pris.ly/d/connection-strings
+
+DATABASE_URL="postgresql://neondb_owner:npg_OPAZ7y4XcpIQ@ep-withered-art-ai59gj24-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require&pgbouncer=true&connect_timeout=30"
+DIRECT_URL="postgresql://neondb_owner:npg_OPAZ7y4XcpIQ@ep-withered-art-ai59gj24.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require"
+
+# Clerk - get from https://clerk.com
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_b3JpZW50ZWQtZ3JpZmZvbi05My5jbGVyay5hY2NvdW50cy5kZXYk
+CLERK_SECRET_KEY=sk_test_o9T4lPa6jvq4VXpGjR4uJkRb7IuwWUnBlhZAKgj2TS
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/dashboard
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/dashboard
+CLERK_WEBHOOK_SECRET=whsec_REPLACE_ME
+
+# Google Vertex AI - paste Service Account JSON (single line or base64)
+virtual_try_on_key=REPLACE_WITH_SERVICE_ACCOUNT_JSON
+GCP_PROJECT_ID=your-gcp-project-id
+GCP_LOCATION=us-central1
+NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL=/
+NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=/
+
+
+# ADMINS
+ADMIN_EMAILS=tanzeelnaveed8@gmail.com
