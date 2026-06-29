@@ -94,7 +94,7 @@ export default async function AdminOverviewPage() {
   return (
     <div className="flex flex-col gap-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-start sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-extrabold text-white">Overview</h1>
           <p className="text-white/40 mt-1 text-sm">
@@ -103,7 +103,7 @@ export default async function AdminOverviewPage() {
         </div>
         <Link
           href="/admin/users"
-          className="rounded-xl bg-white/5 border border-white/10 px-4 py-2 text-sm font-semibold text-white/70 hover:bg-white/10 transition"
+          className="rounded-xl bg-white/5 border border-white/10 px-4 py-2 text-sm font-semibold text-white/70 hover:bg-white/10 transition shrink-0"
         >
           All Users →
         </Link>

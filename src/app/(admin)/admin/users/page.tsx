@@ -80,7 +80,7 @@ export default async function AdminUsersPage({
       </div>
 
       {/* Search */}
-      <form method="GET" className="flex gap-3">
+      <form method="GET" className="flex gap-3 flex-wrap sm:flex-nowrap">
         <input type="hidden" name="sort" value={sortField} />
         <input type="hidden" name="order" value={sortOrder} />
         <input
@@ -88,7 +88,7 @@ export default async function AdminUsersPage({
           name="search"
           defaultValue={search}
           placeholder="Search by email or name..."
-          className="flex-1 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-yellow-400/50 focus:ring-1 focus:ring-yellow-400/20"
+          className="flex-1 min-w-0 w-full sm:w-auto rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-yellow-400/50 focus:ring-1 focus:ring-yellow-400/20"
         />
         <button
           type="submit"

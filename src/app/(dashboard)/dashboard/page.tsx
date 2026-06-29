@@ -137,7 +137,7 @@ export default async function DashboardPage() {
 
       {/* Keys list or empty state */}
       {keys.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-white/10 p-14 text-center">
+        <div className="rounded-2xl border border-dashed border-white/10 p-8 sm:p-14 text-center">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-400/10 border border-yellow-400/20 mx-auto mb-4">
             <svg className="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
@@ -158,15 +158,15 @@ export default async function DashboardPage() {
           </div>
           <div className="divide-y divide-white/5">
             {keys.map((key: { id: string; name: string; key: string; usageCount: number; usageLimit: number; isActive: boolean }) => (
-              <div key={key.id} className="px-6 py-4 flex items-center justify-between gap-4">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
+              <div key={key.id} className="px-4 sm:px-6 py-4 flex items-center justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <p className="text-sm font-semibold text-white">{key.name}</p>
                     <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${key.isActive ? "bg-green-400/10 text-green-400" : "bg-white/10 text-white/40"}`}>
                       {key.isActive ? "Active" : "Disabled"}
                     </span>
                   </div>
-                  <p className="text-xs text-white/30 font-mono">{key.key.slice(0, 24)}...</p>
+                  <p className="text-xs text-white/30 font-mono truncate">{key.key.slice(0, 20)}...</p>
                 </div>
                 <div className="text-right">
                   <p className="text-sm font-bold text-white">{key.usageCount}<span className="text-white/30">/{key.usageLimit}</span></p>

@@ -179,7 +179,7 @@ export default async function LandingPage() {
           <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
         </div>
 
-        <div className="relative mx-auto max-w-5xl px-4 sm:px-6 pt-24 pb-16 text-center">
+        <div className="relative mx-auto max-w-5xl px-4 sm:px-6 pt-16 sm:pt-24 pb-12 sm:pb-16 text-center">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold text-white/60 mb-8 hover:border-white/20 transition cursor-default">
             <span className="h-1.5 w-1.5 rounded-full bg-yellow-400 animate-pulse" />
@@ -382,7 +382,7 @@ export default async function LandingPage() {
               { val: "60s",   label: "To go live" },
               { val: "100%",  label: "Browser-based, no app" },
             ].map((s, i) => (
-              <div key={s.label} className={`text-center ${i > 0 ? "border-l border-white/5 pl-8" : ""}`}>
+              <div key={s.label} className={`text-center ${i > 0 ? "sm:border-l sm:border-white/5 sm:pl-8" : ""}`}>
                 <div className="text-3xl font-extrabold text-white mb-1">{s.val}</div>
                 <div className="text-xs text-white/35">{s.label}</div>
               </div>
@@ -392,9 +392,9 @@ export default async function LandingPage() {
       </section>
 
       {/* FEATURES */}
-      <section className="py-28">
+      <section className="py-14 sm:py-28">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
-          <div className="text-center mb-16">
+          <div className="text-center mb-8 sm:mb-16">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-yellow-400 mb-4">Why TryOnAI</p>
             <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-5">
               Built for store owners,<br />not engineers
@@ -421,9 +421,9 @@ export default async function LandingPage() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="how" className="py-28 border-t border-white/5">
+      <section id="how" className="py-14 sm:py-28 border-t border-white/5">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
-          <div className="text-center mb-16">
+          <div className="text-center mb-8 sm:mb-16">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-yellow-400 mb-4">Setup</p>
             <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-5">Up and running in 3 steps</h2>
             <p className="text-white/45 text-lg max-w-lg mx-auto">No ML expertise. No complex setup. Copy, paste, done.</p>
@@ -493,9 +493,9 @@ export default async function LandingPage() {
       </section>
 
       {/* PLATFORMS */}
-      <section id="platforms" className="py-28 border-t border-white/5">
+      <section id="platforms" className="py-14 sm:py-28 border-t border-white/5">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
-          <div className="text-center mb-16">
+          <div className="text-center mb-8 sm:mb-16">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-yellow-400 mb-4">Integrations</p>
             <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-5">Works with your platform</h2>
             <p className="text-white/45 text-lg max-w-xl mx-auto">
@@ -539,9 +539,9 @@ export default async function LandingPage() {
       </section>
 
       {/* CODE */}
-      <section className="py-28 border-t border-white/5">
+      <section className="py-14 sm:py-28 border-t border-white/5">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-center">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-yellow-400 mb-4">Integration</p>
               <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-5">
@@ -618,9 +618,9 @@ export default async function LandingPage() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="py-28 border-t border-white/5 overflow-hidden">
+      <section className="py-14 sm:py-28 border-t border-white/5 overflow-hidden">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
-          <div className="text-center mb-14">
+          <div className="text-center mb-8 sm:mb-14">
             <span className="inline-flex items-center rounded-full border border-yellow-400/25 bg-yellow-400/10 px-3 py-1 text-xs font-semibold text-yellow-400 mb-5">
               Testimonials
             </span>
@@ -640,9 +640,9 @@ export default async function LandingPage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-28 border-t border-white/5">
+      <section className="py-14 sm:py-28 border-t border-white/5">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <div className="text-center mb-16">
+          <div className="text-center mb-8 sm:mb-16">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-yellow-400 mb-4">FAQ</p>
             <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight">Common questions</h2>
           </div>
@@ -658,9 +658,9 @@ export default async function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-28 border-t border-white/5">
+      <section className="py-14 sm:py-28 border-t border-white/5">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
-          <div className="relative rounded-3xl border border-yellow-400/15 bg-gradient-to-br from-yellow-400/8 via-transparent to-fuchsia-500/5 px-8 py-20 text-center overflow-hidden">
+          <div className="relative rounded-3xl border border-yellow-400/15 bg-gradient-to-br from-yellow-400/8 via-transparent to-fuchsia-500/5 px-5 sm:px-8 py-14 sm:py-20 text-center overflow-hidden">
             <div className="absolute inset-0 bg-yellow-400/5 blur-3xl pointer-events-none" />
             <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-yellow-400/10 rounded-full blur-[100px] pointer-events-none" />
             <div className="relative">

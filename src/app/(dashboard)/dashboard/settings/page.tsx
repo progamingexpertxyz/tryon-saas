@@ -237,13 +237,13 @@ export default function SettingsPage() {
       <div className="rounded-2xl border border-white/10 bg-white/3 p-6">
         <h3 className="text-sm font-bold text-white mb-4">Account</h3>
         <div className="flex flex-col gap-2 text-sm">
-          <div className="flex justify-between">
-            <span className="text-white/40">Name</span>
-            <span className="text-white font-medium">{billing.name || "—"}</span>
+          <div className="flex justify-between gap-4">
+            <span className="text-white/40 shrink-0">Name</span>
+            <span className="text-white font-medium truncate text-right">{billing.name || "—"}</span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-white/40">Email</span>
-            <span className="text-white font-medium">{billing.email}</span>
+          <div className="flex justify-between gap-4">
+            <span className="text-white/40 shrink-0">Email</span>
+            <span className="text-white font-medium truncate text-right">{billing.email}</span>
           </div>
         </div>
       </div>
